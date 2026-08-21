@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-surface text-navy font-body antialiased;
+  }
+  ::selection {
+    @apply bg-gold/30 text-navy;
+  }
+}
+
+@layer utilities {
+  .bg-cell-panels {
+    background-image: linear-gradient(rgba(245, 158, 11, 0.09) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(245, 158, 11, 0.09) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+}
+
+/* Leaflet map container needs an explicit height and its own stacking context */
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+  border-radius: 1rem;
+  z-index: 0;
+  font-family: var(--font-inter), sans-serif;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
