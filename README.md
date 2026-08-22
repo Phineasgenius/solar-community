@@ -1,197 +1,488 @@
-# SunShare — Community Solar & Virtual Net Metering
+# ☀️ SunShare — Community Solar Platform
 
-A hackathon-ready Next.js 14 app for discovering community solar plants, subscribing via
-Virtual Net Metering (VNM), and simulating DISCOM bill settlements.
+**SunShare** is a web platform that makes community solar participation easier for residents, housing communities, and solar-plant hosts.
 
-## Feature additions (v3)
+The platform allows users to discover nearby community solar plants, explore their availability, estimate potential savings through Virtual Net Metering (VNM), subscribe to solar capacity, and monitor their energy and savings through a dedicated dashboard.
 
-- **Hero overlay lightened further** and the "How VNM Works" section stays untouched — this pass
-  focused on functionality and theme.
-- **Real location search, not hardcoded cities.** The Marketplace search box now geocodes
-  whatever you type (via OpenStreetMap's free Nominatim API — no key needed) — search "Belgaum"
-  and it resolves real coordinates, computes real distances to every plant, and sorts by nearest.
-  This is separate from the old "click a city chip" filter, which still exists alongside it.
-- **More geographic spread in the mock data.** Added plants near Belagavi (Belgaum), Hubballi,
-  Mumbai, Hyderabad, and Kolkata, plus matching illustrative DISCOM tariffs (TSSPDCL, CESC) —
-  so distance-based search actually has something nearby to find in more places, not just the
-  original 4 cities.
-- **Symmetric role switching.** Previously, switching Resident → RWA correctly prompted you
-  toward the Host dashboard, but RWA → Resident didn't. Both directions now show a matching
-  redirect card, and the navbar's "Dashboard" link always points at whichever dashboard matches
-  your current role.
-- **New color palette** — swapped the navy/off-white light theme for a dark eco-green theme
-  (see table below). This touched nearly every component's text/background classes; I ran a
-  clean `npm run build` afterward to confirm nothing broke.
+Built as a hackathon-ready prototype using **Next.js, TypeScript, Tailwind CSS, Zustand, React Leaflet, and OpenStreetMap**.
 
-| Token | Used for | Hex |
-|---|---|---|
-| `surface` | Page background | `#0A2118` |
-| `surface-card` | Card backgrounds | `#0F2A20` |
-| `surface-muted` | Borders / dividers | `#1F4A38` |
-| `navy` | Nav/footer/hero backgrounds | `#0D2B21` |
-| `navy-light` | Lighter panel backgrounds | `#163A2D` |
-| `navy-dark` | Deepest background | `#071A14` |
-| `ink` | Primary text | `#E8F5E9` |
-| `ink-muted` | Secondary text | `#A7B8AE` |
-| `emerald` | Primary green accent | `#22C55E` |
-| `emerald-light` | Bright green (text-on-dark) | `#4ADE80` |
-| `gold` | Primary CTA / solar yellow | `#FACC15` |
-| `gold-dark` | Warm accent / hover | `#F59E0B` |
+---
 
-## Feature additions (v2)
+## 🌱 What is SunShare?
 
-- **Hero background fixed.** The dark overlay was too strong; it's now much lighter so your
-  photo actually shows through, with a subtle text-shadow on the headline so copy stays legible
-  regardless of the photo.
-- **Geolocation-aware map (Marketplace).** Click "Use my location" to center the map on you (via
-  the browser's Geolocation API), see live distance to every plant, sort by nearest, and filter
-  by a radius slider. Falls back gracefully (a toast, not a crash) if location is denied/unsupported.
-- **Search, type filter, and sort on the Marketplace list**, in addition to the existing city
-  filter.
-- **Multiple subscriptions per resident.** You can now subscribe to more than one plant; the
-  dashboard aggregates savings/generation across all of them, and each shows as a removable chip.
-- **Waitlist flow** for plants at ≤5% capacity — "Subscribe" becomes "Join Waitlist" automatically.
-- **Toast notifications** (via `sonner`) confirm subscribe/unsubscribe/waitlist/location actions
-  instead of failing silently.
-- **Notifications bell** in the navbar with a mock activity feed (credits applied, capacity
-  alerts, billing cycle closed, new nearby plants).
-- **Downloadable settlement statement** — a real `.txt` file generated client-side from the
-  dashboard, no backend needed.
-- **Search + status filter** on the Host/RWA subscriber ledger table.
-- **"How Virtual Net Metering Works"** 4-step explainer section on the landing page.
+Not everyone can install solar panels on their own rooftop.
 
-## What changed from the original brief
+SunShare explores a different approach: **community solar**.
 
-- **Maps: React-Leaflet + OpenStreetMap instead of Mapbox GL JS.** No API key, no billing
-  account, no signup required — it just works the moment you `npm install`. If you'd rather use
-  Mapbox for nicer styling, see "Switching to Mapbox" below.
-- **No Supabase required.** State (role, subscriptions, calculator inputs) is handled by Zustand
-  with its `persist` middleware, which quietly uses `localStorage` under the hood — this is
-  exactly what the brief asked for ("State Management & Mock Data: Zustand + LocalStorage") and
-  is enough for a hackathon demo. Nothing to configure.
-- **DISCOM tariff numbers are illustrative**, not the real, current published tariff orders.
-  They follow the real slab *structure* (fixed charge + rising ₹/unit slabs) for BSES Rajdhani,
-  BESCOM, MSEDCL and TANGEDCO, but the actual per-unit rates are approximations for demo
-  purposes. Swap in the real tariff-order figures before using this beyond a prototype — this is
-  called out again in `src/lib/discomRates.ts`.
-- **Next.js pinned to 14.2.35**, not 14.2.5 as loosely implied by "Next.js 14" — 14.2.5 has a
-  known security advisory; 14.2.35 is the latest patched release on the 14.x line.
-- Shadcn UI components (`Button`, `Card`, `Badge`, `Slider`, `Dialog`, `Tabs`, `Table`) are
-  hand-built in `src/components/ui/` in the shadcn style (same API/patterns) rather than pulled
-  in via the `shadcn` CLI, so the project has zero interactive setup steps — just `npm install`.
+A shared solar plant can serve multiple households or residents, allowing people who may not have suitable rooftops to participate in renewable energy generation.
 
-## Do you need Supabase or any API keys?
+SunShare provides a digital interface for this model by connecting:
 
-**No.** As shipped, everything runs on mock data + localStorage. You can `npm install` and
-deploy to Vercel with zero environment variables.
+**Residents → Community Solar Plants → Virtual Net Metering → Electricity Savings**
 
-You'd only need to add something if you go further than the hackathon scope:
-- **Supabase** — only if you want real persistence across devices/users instead of per-browser
-  localStorage (e.g. a real subscriber database for the Host dashboard).
-- **Mapbox token** — only if you swap React-Leaflet for Mapbox GL JS for nicer map styling.
+The application demonstrates how residents can discover plants, subscribe to available capacity, estimate their savings, and track their participation.
 
-## 1. Get the files onto your machine
+---
 
-Recreate this exact structure (or unzip the archive you were given):
+## ✨ Features
 
-```
+### 🗺️ Community Solar Marketplace
+
+Discover available solar plants through an interactive marketplace.
+
+* Interactive map powered by **React Leaflet**
+* OpenStreetMap-based mapping
+* Search for locations
+* Location-aware plant discovery
+* Distance calculation between the searched/current location and solar plants
+* Sort plants by distance
+* Filter plants by plant type and availability
+* Radius-based filtering
+* City-based filtering
+* Plant capacity and availability information
+
+The marketplace uses OpenStreetMap's **Nominatim** service for location search and does not require a Mapbox API key.
+
+---
+
+### 📍 Location Detection
+
+SunShare can use the browser's Geolocation API to determine the user's current location.
+
+When enabled, the application can:
+
+* Center the map around the user
+* Calculate distances to solar plants
+* Sort nearby plants
+* Filter plants within a selected radius
+
+If location access is denied or unavailable, the application continues to work using manual location search.
+
+---
+
+### ☀️ Solar Plant Discovery
+
+Each solar plant contains information such as:
+
+* Plant name
+* Location
+* Capacity
+* Available capacity
+* Plant type
+* Estimated generation
+* Subscription status
+* Distance from the user/search location
+
+Plants with very limited remaining capacity can automatically switch from **Subscribe** to **Join Waitlist**.
+
+---
+
+### ⚡ Virtual Net Metering Calculator
+
+The built-in VNM calculator provides an estimate of how community solar participation can affect an electricity bill.
+
+Users can enter relevant consumption and solar parameters to estimate:
+
+* Electricity consumption
+* Solar allocation
+* Estimated generation
+* Grid energy usage
+* Approximate bill savings
+* Solar contribution
+
+The calculator is intended for demonstration purposes and does not represent an official DISCOM billing calculation.
+
+---
+
+### 👤 Resident Dashboard
+
+Residents can manage their community-solar participation through a dedicated dashboard.
+
+The dashboard provides:
+
+* Active solar subscriptions
+* Multiple plant subscriptions
+* Estimated generation
+* Estimated savings
+* Solar contribution
+* Subscription management
+* Activity notifications
+* Settlement information
+* Downloadable settlement statement
+
+Multiple solar plants can be subscribed to simultaneously.
+
+---
+
+### 🏢 Host / RWA Dashboard
+
+Housing societies, RWAs, and solar-plant hosts have a separate dashboard for managing their community.
+
+It includes:
+
+* Subscriber overview
+* Subscriber ledger
+* Search
+* Subscription status filtering
+* Plant information
+* Capacity information
+* Generation data
+* Community-level statistics
+
+The application supports switching between **Resident** and **RWA/Host** roles.
+
+---
+
+### 🔔 Notifications
+
+SunShare includes a notification system for important activity such as:
+
+* Solar credits
+* Capacity alerts
+* Billing-cycle events
+* Nearby plant availability
+* Subscription activity
+
+Notifications are currently based on mock/demo data.
+
+---
+
+### 📄 Settlement Statement
+
+Residents can generate and download a settlement statement directly from the dashboard.
+
+The statement is generated client-side, so no backend service is required.
+
+---
+
+### 💾 Local Data Persistence
+
+SunShare uses **Zustand with persistence** to maintain application state.
+
+Data such as:
+
+* User role
+* Subscriptions
+* Calculator inputs
+
+is persisted using browser `localStorage`.
+
+This allows the prototype to maintain state between page reloads without requiring a database.
+
+---
+
+## 🎨 Design
+
+SunShare uses a clean **light Solarpunk-inspired interface** focused on renewable energy, accessibility, and modern technology.
+
+The visual system uses:
+
+* White and light-gray surfaces
+* Sustainable green accents
+* Soft green backgrounds
+* Blue secondary accents
+* Orange highlights
+* Dark neutral typography
+* Subtle technical grid patterns
+
+### Core Palette
+
+| Token     | Color       | Usage                      |
+| --------- | ----------- | -------------------------- |
+| `#FFFFFF` | White       | Primary background         |
+| `#F8F9FA` | Light Gray  | Cards / secondary surfaces |
+| `#F1F3F4` | Soft Gray   | Muted surfaces             |
+| `#E6F4EA` | Soft Green  | Green accent backgrounds   |
+| `#E8F0FE` | Soft Blue   | Blue accent backgrounds    |
+| `#202124` | Dark Gray   | Primary text               |
+| `#5F6368` | Gray        | Secondary text             |
+| `#1E8E3E` | Green       | Primary accent             |
+| `#137333` | Dark Green  | Hover states               |
+| `#1A73E8` | Blue        | Secondary accent           |
+| `#E37400` | Orange      | Highlights / warnings      |
+| `#DADCE0` | Border Gray | Borders                    |
+
+---
+
+## 🧰 Tech Stack
+
+### Frontend
+
+* **Next.js 14**
+* **React**
+* **TypeScript**
+* **Tailwind CSS**
+
+### UI
+
+* Custom components following the shadcn/ui design pattern
+* Responsive layouts
+* Reusable cards, buttons, badges, dialogs, tabs, tables, and sliders
+
+### State Management
+
+* **Zustand**
+* Zustand Persist
+* Browser `localStorage`
+
+### Maps & Location
+
+* **React Leaflet**
+* **OpenStreetMap**
+* **Nominatim**
+* Browser Geolocation API
+
+### Charts & Data Visualization
+
+* Client-side analytics/chart components for generation and savings visualization
+
+### Notifications
+
+* **Sonner**
+
+---
+
+## 🏗️ Project Structure
+
+```text
 solar-community/
+│
 ├── public/
 │   └── assets/
-│       └── hero-bg.jpg        # ← replace this with your own hero photo (same filename)
+│       └── hero-bg.jpg
+│
 ├── src/
 │   ├── app/
 │   │   ├── layout.tsx
-│   │   ├── page.tsx            # Landing page + VNM Calculator
+│   │   ├── page.tsx
 │   │   ├── globals.css
+│   │   │
 │   │   ├── dashboard/
-│   │   │   ├── page.tsx        # Resident dashboard
+│   │   │   ├── page.tsx
 │   │   │   └── host/
-│   │   │       └── page.tsx    # RWA / Host dashboard
+│   │   │       └── page.tsx
+│   │   │
 │   │   └── marketplace/
-│   │       └── page.tsx        # Map + plant discovery
+│   │       └── page.tsx
+│   │
 │   ├── components/
-│   │   ├── ui/                 # button, card, badge, slider, dialog, tabs, table
+│   │   ├── ui/
 │   │   ├── Navbar.tsx
 │   │   ├── LiveTicker.tsx
 │   │   ├── VnmCalculator.tsx
 │   │   ├── SolarMap.tsx
 │   │   └── AnalyticsChart.tsx
+│   │
 │   ├── lib/
-│   │   ├── discomRates.ts      # Slab tariff math
-│   │   ├── mockData.ts         # Plants, subscribers, generation history
+│   │   ├── discomRates.ts
+│   │   ├── mockData.ts
 │   │   └── utils.ts
+│   │
 │   └── store/
-│       └── useUserStore.ts     # Zustand store (role, subscription, calculator inputs)
+│       └── useUserStore.ts
+│
 ├── package.json
-├── tailwind.config.ts
-├── tsconfig.json
 ├── next.config.js
+├── tailwind.config.ts
 ├── postcss.config.js
+├── tsconfig.json
 └── next-env.d.ts
 ```
 
-## 2. Install & run locally
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+Make sure you have installed:
+
+* Node.js
+* npm
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/Phineasgenius/solar-community.git
+cd solar-community
+```
+
+### 2. Install dependencies
 
 ```bash
 npm install
+```
+
+### 3. Start the development server
+
+```bash
 npm run dev
 ```
 
-Open http://localhost:3000.
+Open:
 
-## 3. Add your hero background image
-
-Drop your own photo at:
-
+```text
+http://localhost:3000
 ```
+
+The application should now be running locally.
+
+---
+
+## 🖼️ Hero Image
+
+The landing page uses:
+
+```text
 public/assets/hero-bg.jpg
 ```
 
-(same filename — it's already wired up in `src/app/page.tsx` via `<Image src="/assets/hero-bg.jpg" ... />`).
-A placeholder image ships in that folder so the build doesn't break before you swap it — replace it
-with something like a wide (1920×1080+) rooftop/solar-farm photo. It renders behind the hero text at
-30% opacity with a navy gradient overlay, so slightly bright/high-contrast photos work best.
+Replace this image with your own solar-energy or renewable-energy photograph if desired.
 
-## 4. Deploy to Vercel
+A wide image is recommended for the best result.
 
-```bash
-npx vercel
+---
+
+## 🔑 API Keys & Environment Variables
+
+**The current application does not require environment variables to run.**
+
+There is no required:
+
+* Supabase configuration
+* Mapbox token
+* Database connection
+* Authentication provider
+
+The marketplace uses React Leaflet and OpenStreetMap, while application state is stored locally using Zustand.
+
+---
+
+## 🗺️ Maps
+
+SunShare currently uses:
+
+**React Leaflet + OpenStreetMap**
+
+This keeps the prototype simple and avoids requiring a commercial map API key.
+
+Location search uses the OpenStreetMap **Nominatim** geocoding service.
+
+For a production application, appropriate API usage limits, caching, attribution, and potentially a dedicated geocoding provider should be considered.
+
+---
+
+## 📊 Data & Calculations
+
+SunShare is currently a **prototype/demo application**.
+
+The following data is mocked:
+
+* Solar plants
+* Plant capacity
+* Subscribers
+* Generation history
+* Notifications
+* Solar generation
+* DISCOM tariff values
+
+The DISCOM tariff calculations are illustrative and should **not** be treated as current electricity tariffs or official billing calculations.
+
+Similarly, the solar-generation and carbon-reduction figures are estimates intended for demonstrating the application's functionality.
+
+---
+
+## 🔄 Application Flow
+
+```text
+                    ┌──────────────────┐
+                    │     SunShare     │
+                    └────────┬─────────┘
+                             │
+             ┌───────────────┴───────────────┐
+             │                               │
+      ┌──────▼──────┐                 ┌──────▼──────┐
+      │   Resident  │                 │ RWA / Host  │
+      └──────┬──────┘                 └──────┬──────┘
+             │                               │
+      Discover Plants                Manage Community
+             │                               │
+      ┌──────▼──────┐                 ┌──────▼──────┐
+      │ Marketplace │                 │   Dashboard  │
+      └──────┬──────┘                 └──────────────┘
+             │
+      Select Solar Plant
+             │
+      ┌──────▼──────┐
+      │  Subscribe  │
+      │ / Waitlist  │
+      └──────┬──────┘
+             │
+      Virtual Net Metering
+             │
+      ┌──────▼──────┐
+      │   Savings   │
+      │  & Energy   │
+      └─────────────┘
 ```
 
-or connect the GitHub repo in the Vercel dashboard and click Deploy. No environment variables are
-required for the app as shipped.
+---
 
-## 5. (Optional) Switching to Mapbox instead of Leaflet
+## 🔮 Future Improvements
 
-If you'd prefer Mapbox's styling:
+SunShare can be extended into a production-ready community-solar platform by adding:
 
-1. Get a free token at https://account.mapbox.com/ → add it to Vercel and a local `.env.local` as
-   `NEXT_PUBLIC_MAPBOX_TOKEN=your_token_here`.
-2. `npm install mapbox-gl react-map-gl`
-3. Replace the contents of `src/components/SolarMap.tsx` with a `react-map-gl` `<Map>` + `<Marker>`
-   implementation, reading `process.env.NEXT_PUBLIC_MAPBOX_TOKEN`.
+* Real user authentication
+* Database-backed subscriptions
+* Real DISCOM tariff data
+* Real-time solar-generation data
+* Payment integration
+* Digital agreements
+* Automated billing
+* Production-grade geocoding
+* Real solar plant APIs
+* Advanced energy analytics
+* Carbon-impact tracking
+* Admin dashboard
+* Role-based authentication and authorization
+* Notifications through email/SMS
+* Mobile application
+* Multi-language support
 
-## 6. (Optional) Real persistence with Supabase
+A backend such as **Supabase, PostgreSQL, or another database service** could be introduced when persistent multi-user data is required.
 
-If you want subscriptions/subscriber data to survive across devices instead of living in the
-browser's localStorage:
+---
 
-1. Create a free project at https://supabase.com.
-2. `npm install @supabase/supabase-js`
-3. Add to `.env.local` / Vercel env vars:
-   ```
-   NEXT_PUBLIC_SUPABASE_URL=your_project_url
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
-   ```
-4. Replace the Zustand `subscribe`/`unsubscribe` actions in `src/store/useUserStore.ts` with calls
-   to a Supabase table (e.g. `subscriptions`).
+## ⚠️ Disclaimer
 
-## Notes on the data
+SunShare is currently a **prototype for demonstration and educational purposes**.
 
-- DISCOM slab tariffs (`src/lib/discomRates.ts`) are illustrative, modeled on real tariff
-  *structure*, not live published rates.
-- Solar yield assumption: 1 kW ≈ 4 units/day (a common rough India-wide estimate).
-- Grid emission factor for carbon savings: 0.82 kg CO2/kWh (illustrative India grid average).
-- All plant, subscriber, and generation-history data in `src/lib/mockData.ts` is fabricated for
-  the demo.
+The solar plants, subscriber information, generation data, tariff values, savings estimates, and other numerical values are simulated or illustrative.
+
+The application should not be used to make actual electricity billing, financial, or solar-investment decisions without replacing the demo data and calculations with verified real-world data.
+
+---
+
+## 📄 License
+
+This project is intended as an educational and hackathon prototype.
+
+Add an explicit open-source license to the repository if you intend to permit redistribution or modification.
+
+---
+
+## 👨‍💻 Author
+
+**Praneel Patil**
+
+GitHub: **@Phineasgenius**
+
+---
+
+## 🌍 Vision
+
+> **Making renewable energy accessible beyond the rooftop.**
+
+SunShare explores how community solar and digital platforms can make participation in renewable energy more accessible to households that cannot install their own solar systems.
+
+**Discover. Share. Generate. Save.** ☀️🌱
