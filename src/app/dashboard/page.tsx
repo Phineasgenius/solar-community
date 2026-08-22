@@ -75,8 +75,8 @@ export default function DashboardPage() {
     return (
       <div className="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6 lg:px-8">
         <Building2 className="mx-auto mb-4 h-10 w-10 text-gold" />
-        <h1 className="font-display text-2xl font-bold text-navy">You're in Host / RWA mode</h1>
-        <p className="mt-2 text-sm text-navy-light/60">
+        <h1 className="font-display text-2xl font-bold text-ink">You're in Host / RWA mode</h1>
+        <p className="mt-2 text-sm text-ink-muted/60">
           Switch to the Host dashboard to manage your plant, subscribers, and settlements.
         </p>
         <Button asChild size="lg" className="mt-6">
@@ -92,10 +92,10 @@ export default function DashboardPage() {
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
         <div>
-          <h1 className="font-display text-3xl font-bold tracking-tight text-navy">
+          <h1 className="font-display text-3xl font-bold tracking-tight text-ink">
             Resident Dashboard
           </h1>
-          <p className="mt-1 text-sm text-navy-light/60">
+          <p className="mt-1 text-sm text-ink-muted/60">
             {consumerId ? `Consumer ${consumerId}` : "No CA number linked yet"} ·{" "}
             {discom.shortName}
           </p>
@@ -123,7 +123,7 @@ export default function DashboardPage() {
           ))}
           <Link
             href="/marketplace"
-            className="rounded-full border border-dashed border-surface-muted px-3 py-1 text-xs font-medium text-navy-light/60 hover:bg-surface-muted/50"
+            className="rounded-full border border-dashed border-surface-muted px-3 py-1 text-xs font-medium text-ink-muted/60 hover:bg-surface-muted/50"
           >
             + Add another plant
           </Link>
@@ -137,32 +137,32 @@ export default function DashboardPage() {
               <Sun className="h-5 w-5" />
             </span>
             <div>
-              <p className="font-display text-xl font-bold text-navy">{result.generatedUnits} kWh</p>
-              <p className="text-xs text-navy-light/60">Generated this cycle</p>
+              <p className="font-display text-xl font-bold text-ink">{result.generatedUnits} kWh</p>
+              <p className="text-xs text-ink-muted/60">Generated this cycle</p>
             </div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="flex items-center gap-3 p-5">
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald/15 text-emerald-dark">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald/15 text-emerald-light">
               <Zap className="h-5 w-5" />
             </span>
             <div>
-              <p className="font-display text-xl font-bold text-navy">
+              <p className="font-display text-xl font-bold text-ink">
                 {formatINR(result.monthlySavings)}
               </p>
-              <p className="text-xs text-navy-light/60">Credits applied this cycle</p>
+              <p className="text-xs text-ink-muted/60">Credits applied this cycle</p>
             </div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="flex items-center gap-3 p-5">
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-navy/10 text-navy">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-navy/10 text-ink">
               <RefreshCw className="h-5 w-5" />
             </span>
             <div>
-              <p className="font-display text-xl font-bold text-navy">{result.savingsPercent}%</p>
-              <p className="text-xs text-navy-light/60">Bill offset via VNM</p>
+              <p className="font-display text-xl font-bold text-ink">{result.savingsPercent}%</p>
+              <p className="text-xs text-ink-muted/60">Bill offset via VNM</p>
             </div>
           </CardContent>
         </Card>
@@ -214,20 +214,20 @@ export default function DashboardPage() {
               <table className="w-full text-sm">
                 <tbody className="divide-y divide-surface-muted">
                   <tr>
-                    <td className="p-3 text-navy-light/70">Base bill ({result.consumptionUnits} units)</td>
+                    <td className="p-3 text-ink-muted/70">Base bill ({result.consumptionUnits} units)</td>
                     <td className="p-3 text-right font-mono">{formatINR(result.baseBill)}</td>
                   </tr>
                   <tr>
-                    <td className="p-3 text-navy-light/70">
+                    <td className="p-3 text-ink-muted/70">
                       Solar VNM credit ({result.creditedUnits} units)
                     </td>
-                    <td className="p-3 text-right font-mono text-emerald-dark">
+                    <td className="p-3 text-right font-mono text-emerald-light">
                       − {formatINR(result.monthlySavings)}
                     </td>
                   </tr>
                   <tr className="bg-surface">
-                    <td className="p-3 font-semibold text-navy">Net payable to {discom.shortName}</td>
-                    <td className="p-3 text-right font-mono font-bold text-navy">
+                    <td className="p-3 font-semibold text-ink">Net payable to {discom.shortName}</td>
+                    <td className="p-3 text-right font-mono font-bold text-ink">
                       {formatINR(result.postVnmBill)}
                     </td>
                   </tr>

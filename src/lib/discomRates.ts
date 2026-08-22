@@ -73,6 +73,31 @@ export const DISCOMS: Discom[] = [
       { upTo: null, rate: 8.05 },
     ],
   },
+  {
+    id: "tsspdcl",
+    name: "Telangana Southern Power Distribution Co.",
+    shortName: "TSSPDCL",
+    state: "Telangana",
+    fixedCharge: 110,
+    slabs: [
+      { upTo: 100, rate: 3.75 },
+      { upTo: 200, rate: 4.85 },
+      { upTo: 400, rate: 6.75 },
+      { upTo: null, rate: 7.7 },
+    ],
+  },
+  {
+    id: "cesc",
+    name: "Calcutta Electric Supply Corporation",
+    shortName: "CESC",
+    state: "West Bengal",
+    fixedCharge: 130,
+    slabs: [
+      { upTo: 100, rate: 5.85 },
+      { upTo: 300, rate: 7.35 },
+      { upTo: null, rate: 8.7 },
+    ],
+  },
 ];
 
 /** ₹ bill for a given number of units under a slab structure (excl. fixed charge unless included=true) */

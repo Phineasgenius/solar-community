@@ -5,9 +5,9 @@ type BadgeVariant = "gold" | "emerald" | "navy" | "outline";
 
 const variantClasses: Record<BadgeVariant, string> = {
   gold: "bg-gold/15 text-gold-dark border border-gold/30",
-  emerald: "bg-emerald/15 text-emerald-dark border border-emerald/30",
-  navy: "bg-navy text-surface border border-navy",
-  outline: "bg-transparent text-navy border border-surface-muted",
+  emerald: "bg-emerald/15 text-emerald-light border border-emerald/30",
+  navy: "bg-navy text-ink border border-navy",
+  outline: "bg-transparent text-ink border border-surface-muted",
 };
 
 export function Badge({

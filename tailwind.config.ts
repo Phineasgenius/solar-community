@@ -11,24 +11,31 @@ const config: Config = {
     extend: {
       colors: {
         navy: {
-          DEFAULT: "#0F172A",
-          light: "#1E293B",
-          dark: "#080D18",
+          DEFAULT: "#0D2B21",
+          light: "#163A2D",
+          dark: "#071A14",
         },
         gold: {
-          DEFAULT: "#F59E0B",
-          light: "#FBBF24",
-          dark: "#B45309",
+          DEFAULT: "#FACC15",
+          light: "#FDE047",
+          dark: "#F59E0B",
         },
         emerald: {
-          DEFAULT: "#10B981",
-          light: "#34D399",
-          dark: "#047857",
+          DEFAULT: "#22C55E",
+          light: "#4ADE80",
+          dark: "#16A34A",
+        },
+        sage: {
+          DEFAULT: "#86A98F",
+        },
+        ink: {
+          DEFAULT: "#E8F5E9",
+          muted: "#A7B8AE",
         },
         surface: {
-          DEFAULT: "#F8FAFC",
-          card: "#FFFFFF",
-          muted: "#E2E8F0",
+          DEFAULT: "#0A2118",
+          card: "#0F2A20",
+          muted: "#1F4A38",
         },
       },
       fontFamily: {
@@ -38,7 +45,7 @@ const config: Config = {
       },
       backgroundImage: {
         "cell-grid":
-          "linear-gradient(rgba(245,158,11,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(245,158,11,0.08) 1px, transparent 1px)",
+          "linear-gradient(rgba(250,204,21,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(250,204,21,0.08) 1px, transparent 1px)",
       },
       backgroundSize: {
         cell: "28px 28px",

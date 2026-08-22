@@ -3,6 +3,41 @@
 A hackathon-ready Next.js 14 app for discovering community solar plants, subscribing via
 Virtual Net Metering (VNM), and simulating DISCOM bill settlements.
 
+## Feature additions (v3)
+
+- **Hero overlay lightened further** and the "How VNM Works" section stays untouched — this pass
+  focused on functionality and theme.
+- **Real location search, not hardcoded cities.** The Marketplace search box now geocodes
+  whatever you type (via OpenStreetMap's free Nominatim API — no key needed) — search "Belgaum"
+  and it resolves real coordinates, computes real distances to every plant, and sorts by nearest.
+  This is separate from the old "click a city chip" filter, which still exists alongside it.
+- **More geographic spread in the mock data.** Added plants near Belagavi (Belgaum), Hubballi,
+  Mumbai, Hyderabad, and Kolkata, plus matching illustrative DISCOM tariffs (TSSPDCL, CESC) —
+  so distance-based search actually has something nearby to find in more places, not just the
+  original 4 cities.
+- **Symmetric role switching.** Previously, switching Resident → RWA correctly prompted you
+  toward the Host dashboard, but RWA → Resident didn't. Both directions now show a matching
+  redirect card, and the navbar's "Dashboard" link always points at whichever dashboard matches
+  your current role.
+- **New color palette** — swapped the navy/off-white light theme for a dark eco-green theme
+  (see table below). This touched nearly every component's text/background classes; I ran a
+  clean `npm run build` afterward to confirm nothing broke.
+
+| Token | Used for | Hex |
+|---|---|---|
+| `surface` | Page background | `#0A2118` |
+| `surface-card` | Card backgrounds | `#0F2A20` |
+| `surface-muted` | Borders / dividers | `#1F4A38` |
+| `navy` | Nav/footer/hero backgrounds | `#0D2B21` |
+| `navy-light` | Lighter panel backgrounds | `#163A2D` |
+| `navy-dark` | Deepest background | `#071A14` |
+| `ink` | Primary text | `#E8F5E9` |
+| `ink-muted` | Secondary text | `#A7B8AE` |
+| `emerald` | Primary green accent | `#22C55E` |
+| `emerald-light` | Bright green (text-on-dark) | `#4ADE80` |
+| `gold` | Primary CTA / solar yellow | `#FACC15` |
+| `gold-dark` | Warm accent / hover | `#F59E0B` |
+
 ## Feature additions (v2)
 
 - **Hero background fixed.** The dark overlay was too strong; it's now much lighter so your

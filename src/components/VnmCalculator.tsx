@@ -48,26 +48,26 @@ export default function VnmCalculator() {
       <Card className="lg:col-span-3">
         <CardContent className="flex flex-col gap-6 p-6">
           <div>
-            <label className="mb-1.5 block font-mono text-xs uppercase tracking-wide text-navy-light/60">
+            <label className="mb-1.5 block font-mono text-xs uppercase tracking-wide text-ink-muted/60">
               Consumer Account (CA) Number
             </label>
             <input
               value={consumerId}
               onChange={(e) => setConsumerId(e.target.value)}
               placeholder="e.g. CA-104209"
-              className="w-full rounded-xl border border-surface-muted bg-surface px-4 py-2.5 font-mono text-sm text-navy outline-none focus:border-gold focus:ring-2 focus:ring-gold/30"
+              className="w-full rounded-xl border border-surface-muted bg-surface px-4 py-2.5 font-mono text-sm text-ink outline-none focus:border-gold focus:ring-2 focus:ring-gold/30"
             />
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="mb-1.5 block font-mono text-xs uppercase tracking-wide text-navy-light/60">
+              <label className="mb-1.5 block font-mono text-xs uppercase tracking-wide text-ink-muted/60">
                 DISCOM
               </label>
               <select
                 value={discomId}
                 onChange={(e) => setDiscomId(e.target.value)}
-                className="w-full rounded-xl border border-surface-muted bg-surface px-4 py-2.5 text-sm text-navy outline-none focus:border-gold focus:ring-2 focus:ring-gold/30"
+                className="w-full rounded-xl border border-surface-muted bg-surface px-4 py-2.5 text-sm text-ink outline-none focus:border-gold focus:ring-2 focus:ring-gold/30"
               >
                 {DISCOMS.map((d) => (
                   <option key={d.id} value={d.id}>
@@ -77,13 +77,13 @@ export default function VnmCalculator() {
               </select>
             </div>
             <div>
-              <label className="mb-1.5 block font-mono text-xs uppercase tracking-wide text-navy-light/60">
+              <label className="mb-1.5 block font-mono text-xs uppercase tracking-wide text-ink-muted/60">
                 Household Tier
               </label>
               <select
                 value={tierId}
                 onChange={(e) => setTierId(e.target.value)}
-                className="w-full rounded-xl border border-surface-muted bg-surface px-4 py-2.5 text-sm text-navy outline-none focus:border-gold focus:ring-2 focus:ring-gold/30"
+                className="w-full rounded-xl border border-surface-muted bg-surface px-4 py-2.5 text-sm text-ink outline-none focus:border-gold focus:ring-2 focus:ring-gold/30"
               >
                 {TIERS.map((t) => (
                   <option key={t.id} value={t.id}>
@@ -96,12 +96,12 @@ export default function VnmCalculator() {
 
           <div>
             <div className="mb-2 flex items-center justify-between">
-              <label className="font-mono text-xs uppercase tracking-wide text-navy-light/60">
+              <label className="font-mono text-xs uppercase tracking-wide text-ink-muted/60">
                 Average Monthly Bill
               </label>
-              <span className="font-display text-lg font-bold text-navy">
+              <span className="font-display text-lg font-bold text-ink">
                 {formatINR(monthlyBill)}
-                <span className="ml-1 text-xs font-normal text-navy-light/50">/mo</span>
+                <span className="ml-1 text-xs font-normal text-ink-muted/50">/mo</span>
               </span>
             </div>
             <Slider
@@ -111,13 +111,13 @@ export default function VnmCalculator() {
               max={15000}
               step={100}
             />
-            <div className="mt-1.5 flex justify-between font-mono text-[11px] text-navy-light/40">
+            <div className="mt-1.5 flex justify-between font-mono text-[11px] text-ink-muted/40">
               <span>₹500</span>
               <span>₹15,000</span>
             </div>
           </div>
 
-          <div className="rounded-xl bg-navy p-4 font-mono text-xs text-surface/70">
+          <div className="rounded-xl bg-navy p-4 font-mono text-xs text-ink/70">
             Estimated current usage: ~{formatNumber(result.consumptionUnits, 0)} units/month at{" "}
             {discom.shortName} slab rates.
           </div>
@@ -125,17 +125,17 @@ export default function VnmCalculator() {
       </Card>
 
       <div className="flex flex-col gap-4 lg:col-span-2">
-        <Card className="border-gold/30 bg-gradient-to-br from-navy to-navy-light text-surface">
+        <Card className="border-gold/30 bg-gradient-to-br from-navy to-navy-light text-ink">
           <CardContent className="flex flex-col gap-4 p-6">
             <div className="flex items-center gap-2">
               <Sun className="h-4 w-4 text-gold" />
-              <span className="font-mono text-xs uppercase tracking-wide text-surface/60">
+              <span className="font-mono text-xs uppercase tracking-wide text-ink/60">
                 Virtual Credit Offset
               </span>
             </div>
             <div className="font-display text-4xl font-extrabold text-gold">
               {formatINR(result.monthlySavings)}
-              <span className="ml-1 text-base font-medium text-surface/60">/mo</span>
+              <span className="ml-1 text-base font-medium text-ink/60">/mo</span>
             </div>
             <Badge variant="gold" className="w-fit">
               {result.savingsPercent}% bill reduction
@@ -143,13 +143,13 @@ export default function VnmCalculator() {
             <div className="h-px bg-white/10" />
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
-                <p className="font-mono text-[11px] uppercase tracking-wide text-surface/50">
+                <p className="font-mono text-[11px] uppercase tracking-wide text-ink/50">
                   Recommended Share
                 </p>
                 <p className="font-display font-semibold">{result.recommendedKw} kW Plant</p>
               </div>
               <div>
-                <p className="font-mono text-[11px] uppercase tracking-wide text-surface/50">
+                <p className="font-mono text-[11px] uppercase tracking-wide text-ink/50">
                   Post-VNM Bill
                 </p>
                 <p className="font-display font-semibold">{formatINR(result.postVnmBill)}</p>
@@ -164,10 +164,10 @@ export default function VnmCalculator() {
               <Leaf className="h-5 w-5" />
             </span>
             <div>
-              <p className="font-display text-xl font-bold text-navy">
+              <p className="font-display text-xl font-bold text-ink">
                 {result.carbonSavedTonsPerYear} Tons CO2/year
               </p>
-              <p className="text-xs text-navy-light/60">Carbon offset from your solar share</p>
+              <p className="text-xs text-ink-muted/60">Carbon offset from your solar share</p>
             </div>
           </CardContent>
         </Card>

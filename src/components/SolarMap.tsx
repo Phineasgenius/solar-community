@@ -22,7 +22,7 @@ import { Zap, Users, Gauge, LocateFixed, MapPin } from "lucide-react";
 function markerColor(percentLeft: number) {
   if (percentLeft <= 10) return "#EF4444";
   if (percentLeft <= 25) return "#F59E0B";
-  return "#10B981";
+  return "#22C55E";
 }
 
 /** Recenters the Leaflet map imperatively whenever `center` changes. */
@@ -87,7 +87,7 @@ export default function SolarMap({
         <button
           onClick={onRequestLocation}
           disabled={locating}
-          className="absolute right-3 top-3 z-[500] flex items-center gap-1.5 rounded-full bg-white/95 px-3 py-2 text-xs font-semibold text-navy shadow-lg backdrop-blur transition-colors hover:bg-white disabled:opacity-60"
+          className="absolute right-3 top-3 z-[500] flex items-center gap-1.5 rounded-full bg-white/95 px-3 py-2 text-xs font-semibold text-navy-dark shadow-lg backdrop-blur transition-colors hover:bg-white disabled:opacity-60"
         >
           <LocateFixed className={`h-3.5 w-3.5 ${locating ? "animate-spin" : ""}`} />
           {locating ? "Locating…" : userPos ? "Re-center on me" : "Use my location"}
@@ -155,7 +155,7 @@ export default function SolarMap({
                   {selected.type} · {selected.city} ·{" "}
                   {DISCOMS.find((d) => d.id === selected.discomId)?.shortName}
                   {userPos && (
-                    <span className="flex items-center gap-1 text-navy-light/70">
+                    <span className="flex items-center gap-1 text-ink-muted/70">
                       <MapPin className="h-3 w-3" />
                       {formatDistance(distanceKm(userPos, selected))} from you
                     </span>
@@ -166,31 +166,31 @@ export default function SolarMap({
               <div className="grid grid-cols-3 gap-3 rounded-xl bg-surface p-4">
                 <div className="text-center">
                   <Gauge className="mx-auto mb-1 h-4 w-4 text-gold" />
-                  <p className="font-display text-sm font-bold text-navy">
+                  <p className="font-display text-sm font-bold text-ink">
                     {selected.capacityLeftPercent}%
                   </p>
-                  <p className="font-mono text-[10px] text-navy-light/50">Capacity Left</p>
+                  <p className="font-mono text-[10px] text-ink-muted/50">Capacity Left</p>
                 </div>
                 <div className="text-center">
                   <Users className="mx-auto mb-1 h-4 w-4 text-gold" />
-                  <p className="font-display text-sm font-bold text-navy">
+                  <p className="font-display text-sm font-bold text-ink">
                     {selected.subscribers}
                   </p>
-                  <p className="font-mono text-[10px] text-navy-light/50">Subscribers</p>
+                  <p className="font-mono text-[10px] text-ink-muted/50">Subscribers</p>
                 </div>
                 <div className="text-center">
                   <Zap className="mx-auto mb-1 h-4 w-4 text-gold" />
-                  <p className="font-display text-sm font-bold text-navy">
+                  <p className="font-display text-sm font-bold text-ink">
                     ₹{selected.pricePerUnit}/unit
                   </p>
-                  <p className="font-mono text-[10px] text-navy-light/50">Sub. Price</p>
+                  <p className="font-mono text-[10px] text-ink-muted/50">Sub. Price</p>
                 </div>
               </div>
 
               {isNearlyFull && !existingShare ? (
-                <div className="mt-4 rounded-xl border border-gold/30 bg-gold/10 p-4 text-sm text-navy">
+                <div className="mt-4 rounded-xl border border-gold/30 bg-gold/10 p-4 text-sm text-ink">
                   <p className="font-semibold">Almost fully subscribed</p>
-                  <p className="mt-1 text-xs text-navy-light/70">
+                  <p className="mt-1 text-xs text-ink-muted/70">
                     Only {selected.capacityLeftPercent}% capacity remains. Join the waitlist and
                     we&apos;ll notify you the moment a share opens up.
                   </p>
@@ -207,7 +207,7 @@ export default function SolarMap({
               ) : (
                 <>
                   <div className="mt-4">
-                    <label className="mb-1.5 block font-mono text-xs uppercase tracking-wide text-navy-light/60">
+                    <label className="mb-1.5 block font-mono text-xs uppercase tracking-wide text-ink-muted/60">
                       Share Size (kW)
                     </label>
                     <input
@@ -221,7 +221,7 @@ export default function SolarMap({
                     />
                     <div className="mt-1 flex items-center justify-between">
                       <Badge variant="gold">{shareKw} kW</Badge>
-                      <span className="font-mono text-xs text-navy-light/60">
+                      <span className="font-mono text-xs text-ink-muted/60">
                         ~{Math.round(shareKw * 4 * 30)} units/mo
                       </span>
                     </div>
@@ -231,7 +231,7 @@ export default function SolarMap({
                     {existingShare ? "Update Subscription" : "Subscribe via VNM"}
                   </Button>
                   {existingShare && (
-                    <p className="mt-2 text-center text-xs text-emerald-dark">
+                    <p className="mt-2 text-center text-xs text-emerald-light">
                       You already hold a {existingShare.kw} kW share here.
                     </p>
                   )}

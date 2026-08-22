@@ -63,14 +63,14 @@ export default function Home() {
           <Badge variant="gold" className="mx-auto mb-6 w-fit">
             <Sun className="h-3 w-3" /> Virtual Net Metering, Live in 6 Cities
           </Badge>
-          <h1 className="font-display text-4xl font-extrabold leading-[1.08] tracking-tight text-surface drop-shadow-[0_2px_18px_rgba(0,0,0,0.65)] sm:text-6xl">
+          <h1 className="font-display text-4xl font-extrabold leading-[1.08] tracking-tight text-ink drop-shadow-[0_2px_18px_rgba(0,0,0,0.65)] sm:text-6xl">
             No Roof? No Problem.
             <br />
             <span className="text-gold">Subscribe to Local Solar</span>
             <br />
             & Cut DISCOM Bills by 35%.
           </h1>
-          <p className="mx-auto mt-5 max-w-xl text-balance text-sm text-surface/80 drop-shadow-[0_1px_8px_rgba(0,0,0,0.6)] sm:text-base">
+          <p className="mx-auto mt-5 max-w-xl text-balance text-sm text-ink/80 drop-shadow-[0_1px_8px_rgba(0,0,0,0.6)] sm:text-base">
             Join a nearby community solar plant, earn virtual net-metering credits on your
             existing electricity bill, and track every unit generated in real time — no
             installation on your own roof required.
@@ -95,8 +95,8 @@ export default function Home() {
                 className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur"
               >
                 <Icon className="mx-auto mb-2 h-5 w-5 text-gold" />
-                <p className="font-display text-xl font-bold text-surface">{value}</p>
-                <p className="mt-0.5 font-mono text-[11px] text-surface/50">{label}</p>
+                <p className="font-display text-xl font-bold text-ink">{value}</p>
+                <p className="mt-0.5 font-mono text-[11px] text-ink/50">{label}</p>
               </div>
             ))}
           </div>
@@ -107,10 +107,10 @@ export default function Home() {
       <section className="border-b border-surface-muted bg-surface-card">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
           <div className="mx-auto mb-10 max-w-2xl text-center">
-            <h2 className="font-display text-3xl font-bold tracking-tight text-navy">
+            <h2 className="font-display text-3xl font-bold tracking-tight text-ink">
               How Virtual Net Metering Works
             </h2>
-            <p className="mt-2 text-sm text-navy-light/60">
+            <p className="mt-2 text-sm text-ink-muted/60">
               Four steps from "no roof" to a lower DISCOM bill.
             </p>
           </div>
@@ -120,11 +120,11 @@ export default function Home() {
                 <span className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-gold/15 text-gold-dark">
                   <Icon className="h-5 w-5" />
                 </span>
-                <span className="absolute right-5 top-5 font-mono text-xs text-navy-light/30">
+                <span className="absolute right-5 top-5 font-mono text-xs text-ink-muted/30">
                   0{i + 1}
                 </span>
-                <h3 className="font-display text-sm font-semibold text-navy">{title}</h3>
-                <p className="mt-1.5 text-xs leading-relaxed text-navy-light/60">{detail}</p>
+                <h3 className="font-display text-sm font-semibold text-ink">{title}</h3>
+                <p className="mt-1.5 text-xs leading-relaxed text-ink-muted/60">{detail}</p>
               </div>
             ))}
           </div>
@@ -134,10 +134,10 @@ export default function Home() {
       {/* CALCULATOR */}
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto mb-10 max-w-2xl text-center">
-          <h2 className="font-display text-3xl font-bold tracking-tight text-navy">
+          <h2 className="font-display text-3xl font-bold tracking-tight text-ink">
             Your VNM Savings Engine
           </h2>
-          <p className="mt-2 text-sm text-navy-light/60">
+          <p className="mt-2 text-sm text-ink-muted/60">
             Enter your bill and DISCOM to see exactly how much a shared solar subscription would
             save you every month.
           </p>
@@ -150,7 +150,7 @@ export default function Home() {
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 px-4 py-10 sm:flex-row sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
             <ShieldCheck className="h-6 w-6 text-emerald" />
-            <p className="text-sm text-navy-light/70">
+            <p className="text-sm text-ink-muted/70">
               Every subscription is metered against real DISCOM slab tariffs and settled through
               your existing bill — no separate wallet, no new hardware.
             </p>

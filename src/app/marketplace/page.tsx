@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { SOLAR_PLANTS, type SolarPlant } from "@/lib/mockData";
 import { DISCOMS } from "@/lib/discomRates";
-import { getCurrentPosition, distanceKm, formatDistance, type LatLng } from "@/lib/geo";
+import { getCurrentPosition, geocodePlace, distanceKm, formatDistance, type LatLng } from "@/lib/geo";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Users, Gauge, Search, Navigation } from "lucide-react";
@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils";
 const SolarMap = dynamic(() => import("@/components/SolarMap"), {
   ssr: false,
   loading: () => (
-    <div className="flex h-[520px] w-full items-center justify-center rounded-2xl border border-surface-muted bg-surface-card font-mono text-sm text-navy-light/50">
+    <div className="flex h-[520px] w-full items-center justify-center rounded-2xl border border-surface-muted bg-surface-card font-mono text-sm text-ink-muted/50">
       Loading map…
     </div>
   ),
@@ -34,6 +34,9 @@ export default function MarketplacePage() {
   const [userPos, setUserPos] = useState<LatLng | null>(null);
   const [locating, setLocating] = useState(false);
 
+  const [locationSearching, setLocationSearching] = useState(false);
+  const [locatedLabel, setLocatedLabel] = useState<string | null>(null);
+
   const handleRequestLocation = async () => {
     setLocating(true);
     const pos = await getCurrentPosition();
@@ -45,8 +48,28 @@ export default function MarketplacePage() {
       return;
     }
     setUserPos(pos);
+    setLocatedLabel("your current location");
     setSortKey("distance");
     toast.success("Location found — showing nearby plants first");
+  };
+
+  const handleLocationSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!query.trim()) return;
+    setLocationSearching(true);
+    const result = await geocodePlace(query);
+    setLocationSearching(false);
+    if (!result) {
+      toast.error(`Couldn't find "${query}"`, {
+        description: "Try a more specific city or area name.",
+      });
+      return;
+    }
+    setUserPos(result.pos);
+    setLocatedLabel(result.label.split(",")[0]);
+    setSortKey("distance");
+    setQuery(""); // this was a place search, not a name filter — don't also filter the list by it
+    toast.success(`Showing plants near ${result.label.split(",")[0]}`);
   };
 
   const withDistance = useMemo(
@@ -83,10 +106,10 @@ export default function MarketplacePage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       <div className="mb-8 flex flex-col gap-2">
-        <h1 className="font-display text-3xl font-bold tracking-tight text-navy">
+        <h1 className="font-display text-3xl font-bold tracking-tight text-ink">
           Local Solar Plant Discovery
         </h1>
-        <p className="text-sm text-navy-light/60">
+        <p className="text-sm text-ink-muted/60">
           Explore active community solar plants near you and subscribe directly through virtual
           net metering.
         </p>
@@ -95,19 +118,29 @@ export default function MarketplacePage() {
       {/* Filter bar */}
       <div className="mb-6 flex flex-col gap-3 rounded-2xl border border-surface-muted bg-surface-card p-4">
         <div className="flex flex-col gap-3 sm:flex-row">
-          <div className="relative flex-1">
-            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-navy-light/40" />
-            <input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search by plant name or city…"
-              className="w-full rounded-xl border border-surface-muted bg-surface py-2.5 pl-9 pr-4 text-sm text-navy outline-none focus:border-gold focus:ring-2 focus:ring-gold/30"
-            />
-          </div>
+          <form onSubmit={handleLocationSearch} className="relative flex flex-1 gap-2">
+            <div className="relative flex-1">
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-muted/40" />
+              <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search a plant name, or type a city/area and hit Find…"
+                className="w-full rounded-xl border border-surface-muted bg-surface py-2.5 pl-9 pr-4 text-sm text-ink outline-none focus:border-gold focus:ring-2 focus:ring-gold/30"
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={locationSearching || !query.trim()}
+              className="flex shrink-0 items-center gap-1.5 rounded-xl bg-navy px-4 py-2.5 text-sm font-semibold text-ink transition-colors hover:bg-navy-light disabled:opacity-50"
+            >
+              <Navigation className={`h-3.5 w-3.5 ${locationSearching ? "animate-spin" : ""}`} />
+              {locationSearching ? "Finding…" : "Find"}
+            </button>
+          </form>
           <select
             value={type}
             onChange={(e) => setType(e.target.value)}
-            className="rounded-xl border border-surface-muted bg-surface px-3 py-2.5 text-sm text-navy outline-none focus:border-gold focus:ring-2 focus:ring-gold/30"
+            className="rounded-xl border border-surface-muted bg-surface px-3 py-2.5 text-sm text-ink outline-none focus:border-gold focus:ring-2 focus:ring-gold/30"
           >
             {TYPES.map((t) => (
               <option key={t} value={t}>
@@ -118,7 +151,7 @@ export default function MarketplacePage() {
           <select
             value={sortKey}
             onChange={(e) => setSortKey(e.target.value as SortKey)}
-            className="rounded-xl border border-surface-muted bg-surface px-3 py-2.5 text-sm text-navy outline-none focus:border-gold focus:ring-2 focus:ring-gold/30"
+            className="rounded-xl border border-surface-muted bg-surface px-3 py-2.5 text-sm text-ink outline-none focus:border-gold focus:ring-2 focus:ring-gold/30"
           >
             <option value="capacity">Sort: Most capacity left</option>
             <option value="price">Sort: Lowest price / unit</option>
@@ -129,9 +162,14 @@ export default function MarketplacePage() {
         </div>
 
         {userPos && (
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <Navigation className="h-3.5 w-3.5 shrink-0 text-gold" />
-            <label className="whitespace-nowrap font-mono text-xs text-navy-light/60">
+            {locatedLabel && (
+              <span className="whitespace-nowrap font-mono text-xs text-gold-dark">
+                Near {locatedLabel}
+              </span>
+            )}
+            <label className="whitespace-nowrap font-mono text-xs text-ink-muted/60">
               Within {radiusKm >= 500 ? "any distance" : formatDistance(radiusKm)}
             </label>
             <input
@@ -155,7 +193,7 @@ export default function MarketplacePage() {
                 "rounded-full border px-3.5 py-1.5 text-xs font-medium font-mono transition-colors",
                 c === city
                   ? "border-gold bg-gold/15 text-gold-dark"
-                  : "border-surface-muted text-navy-light/60 hover:bg-surface-muted/50"
+                  : "border-surface-muted text-ink-muted/60 hover:bg-surface-muted/50"
               )}
             >
               {c}
@@ -176,7 +214,7 @@ export default function MarketplacePage() {
 
         <div className="flex flex-col gap-3 lg:col-span-2">
           {filtered.length === 0 && (
-            <div className="rounded-xl border border-dashed border-surface-muted p-6 text-center text-sm text-navy-light/50">
+            <div className="rounded-xl border border-dashed border-surface-muted p-6 text-center text-sm text-ink-muted/50">
               No plants match these filters. Try widening your radius or clearing a filter.
             </div>
           )}
@@ -185,8 +223,8 @@ export default function MarketplacePage() {
               <CardContent className="flex flex-col gap-2 p-4">
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <p className="font-display text-sm font-semibold text-navy">{plant.name}</p>
-                    <p className="flex flex-wrap items-center gap-1 text-xs text-navy-light/60">
+                    <p className="font-display text-sm font-semibold text-ink">{plant.name}</p>
+                    <p className="flex flex-wrap items-center gap-1 text-xs text-ink-muted/60">
                       <MapPin className="h-3 w-3" /> {plant.city} ·{" "}
                       {DISCOMS.find((d) => d.id === plant.discomId)?.shortName}
                       {distance !== null && (
@@ -208,7 +246,7 @@ export default function MarketplacePage() {
                     {plant.capacityLeftPercent}% left
                   </Badge>
                 </div>
-                <div className="flex flex-wrap items-center gap-4 font-mono text-xs text-navy-light/60">
+                <div className="flex flex-wrap items-center gap-4 font-mono text-xs text-ink-muted/60">
                   <span className="flex items-center gap-1">
                     <Gauge className="h-3.5 w-3.5" /> {plant.capacityKw} kW
                   </span>

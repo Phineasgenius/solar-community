@@ -35,12 +35,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <LiveTicker />
         <main className="min-h-[calc(100vh-7rem)]">{children}</main>
         <footer className="border-t border-surface-muted bg-navy">
-          <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 py-8 text-sm text-surface/60 sm:flex-row sm:px-6 lg:px-8">
+          <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 py-8 text-sm text-ink/60 sm:flex-row sm:px-6 lg:px-8">
             <div className="flex items-center gap-2">
               <span className="flex h-6 w-6 items-center justify-center rounded-md bg-gold text-navy-dark">
                 <Sun className="h-3.5 w-3.5" />
               </span>
-              <span className="font-display font-semibold text-surface">SunShare</span>
+              <span className="font-display font-semibold text-ink">SunShare</span>
             </div>
             <p className="font-mono text-xs">
               Built for a 24-hour hackathon · Mock data only · Not affiliated with any DISCOM

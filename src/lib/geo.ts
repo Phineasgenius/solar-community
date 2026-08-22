@@ -35,3 +35,36 @@ export function getCurrentPosition(): Promise<LatLng | null> {
     );
   });
 }
+
+export type GeocodeResult = { pos: LatLng; label: string };
+
+/**
+ * Free-text place search via OpenStreetMap's Nominatim geocoder (no API key).
+ * This is a public, rate-limited (fair-use) service — fine for demo traffic,
+ * but swap in a dedicated geocoding provider before any real production load.
+ * Never throws — returns null if nothing is found or the request fails.
+ */
+export async function geocodePlace(query: string): Promise<GeocodeResult | null> {
+  if (!query.trim()) return null;
+  try {
+    const url = new URL("https://nominatim.openstreetmap.org/search");
+    url.searchParams.set("q", query);
+    url.searchParams.set("format", "jsonv2");
+    url.searchParams.set("limit", "1");
+    url.searchParams.set("countrycodes", "in"); // bias to India, matching the DISCOM/plant data
+
+    const res = await fetch(url.toString(), {
+      headers: { Accept: "application/json" },
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (!Array.isArray(data) || data.length === 0) return null;
+    const first = data[0];
+    return {
+      pos: { lat: parseFloat(first.lat), lng: parseFloat(first.lon) },
+      label: first.display_name as string,
+    };
+  } catch {
+    return null;
+  }
+}

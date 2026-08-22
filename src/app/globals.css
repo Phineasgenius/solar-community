@@ -7,17 +7,17 @@
     scroll-behavior: smooth;
   }
   body {
-    @apply bg-surface text-navy font-body antialiased;
+    @apply bg-surface text-ink font-body antialiased;
   }
   ::selection {
-    @apply bg-gold/30 text-navy;
+    @apply bg-gold/30 text-ink;
   }
 }
 
 @layer utilities {
   .bg-cell-panels {
-    background-image: linear-gradient(rgba(245, 158, 11, 0.09) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(245, 158, 11, 0.09) 1px, transparent 1px);
+    background-image: linear-gradient(rgba(250, 204, 21, 0.09) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(250, 204, 21, 0.09) 1px, transparent 1px);
     background-size: 28px 28px;
   }
 }

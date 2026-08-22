@@ -10,13 +10,13 @@ import NotificationsBell from "@/components/NotificationsBell";
 const links = [
   { href: "/marketplace", label: "Marketplace", icon: MapPin },
   { href: "/", label: "VNM Calculator", icon: Sun },
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
   const role = useUserStore((s) => s.role);
   const setRole = useUserStore((s) => s.setRole);
+  const dashboardHref = role === "rwa" ? "/dashboard/host" : "/dashboard";
 
   return (
     <header className="sticky top-0 z-40 border-b border-white/10 bg-navy/95 backdrop-blur">
@@ -25,7 +25,7 @@ export default function Navbar() {
           <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gold text-navy-dark">
             <Sun className="h-5 w-5" />
           </span>
-          <span className="font-display text-lg font-bold tracking-tight text-surface">
+          <span className="font-display text-lg font-bold tracking-tight text-ink">
             SunShare
           </span>
         </Link>
@@ -41,7 +41,7 @@ export default function Navbar() {
                   "flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                   active
                     ? "bg-white/10 text-gold"
-                    : "text-surface/70 hover:bg-white/5 hover:text-surface"
+                    : "text-ink/70 hover:bg-white/5 hover:text-ink"
                 )}
               >
                 <Icon className="h-4 w-4" />
@@ -49,6 +49,18 @@ export default function Navbar() {
               </Link>
             );
           })}
+          <Link
+            href={dashboardHref}
+            className={cn(
+              "flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+              pathname.startsWith("/dashboard")
+                ? "bg-white/10 text-gold"
+                : "text-ink/70 hover:bg-white/5 hover:text-ink"
+            )}
+          >
+            <LayoutDashboard className="h-4 w-4" />
+            Dashboard
+          </Link>
         </div>
 
         <div className="flex items-center gap-2">
@@ -58,7 +70,7 @@ export default function Navbar() {
             onClick={() => setRole("resident")}
             className={cn(
               "flex items-center gap-1.5 rounded-full px-3 py-1.5 transition-colors",
-              role === "resident" ? "bg-gold text-navy-dark font-semibold" : "text-surface/60 hover:text-surface"
+              role === "resident" ? "bg-gold text-navy-dark font-semibold" : "text-ink/60 hover:text-ink"
             )}
           >
             <Sun className="h-3.5 w-3.5" />
@@ -68,7 +80,7 @@ export default function Navbar() {
             onClick={() => setRole("rwa")}
             className={cn(
               "flex items-center gap-1.5 rounded-full px-3 py-1.5 transition-colors",
-              role === "rwa" ? "bg-gold text-navy-dark font-semibold" : "text-surface/60 hover:text-surface"
+              role === "rwa" ? "bg-gold text-navy-dark font-semibold" : "text-ink/60 hover:text-ink"
             )}
           >
             <Building2 className="h-3.5 w-3.5" />
